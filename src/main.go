@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
-	"io"
-//	"sync"
+	//	"sync"
 )
 
-func main(){
+func main() {
 	//var wg sync.WaitGroup
 
 	startNum := 18
@@ -22,34 +22,34 @@ func main(){
 	//wg.Wait()
 }
 
-func get_image(nr int){
-	
+func get_image(nr int) {
+
 	imgURL := fmt.Sprintf("%s%05d%s", "http://2015.revision-party.net/media/photowall/photobooth_display/thumbs/big_Capture", nr, ".jpg")
 	fmt.Println(imgURL)
 
 	resp, err := http.Get(imgURL)
 	if err != nil {
 		fmt.Println(err)
-	}else{
+	} else {
 		// open output file
-		outDir := "imgs" 
+		outDir := "imgs"
 		err := os.MkdirAll(outDir, 0644)
-		
+
 		if err != nil {
 			panic(err)
 		}
 
-	    fo, err := os.Create(fmt.Sprintf("%s%05d%s", fmt.Sprintf("%s%s",outDir, "/photowall_"), nr,".jpg"))
-	    if err != nil {
-	        panic(err)
-	    }
+		fo, err := os.Create(fmt.Sprintf("%s%05d%s", fmt.Sprintf("%s%s", outDir, "/photowall_"), nr, ".jpg"))
+		if err != nil {
+			panic(err)
+		}
 
-	    // close fo on exit and check for its returned error
-	    defer func() {
-	        if err := fo.Close(); err != nil {
-	            panic(err)
-	        }
-	    }()
+		// close fo on exit and check for its returned error
+		defer func() {
+			if err := fo.Close(); err != nil {
+				panic(err)
+			}
+		}()
 
 		buf := make([]byte, 1024)
 		for {
